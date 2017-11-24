@@ -1,0 +1,79 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Card Collection Popup</title>
+    <style type="text/css">
+      body {
+        margin: 10px;
+        white-space: nowrap;
+      }
+
+      h1 {
+        font-size: 15px;
+      }
+
+      #container {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #collect {
+        color: blue;
+      }
+      #collect:focus {
+        outline: 0;
+      }
+      #error {
+        color: red;
+        display: none;
+      }
+    </style>
+
+    <script src="collect.js"></script>
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+  </head>
+
+  <body>
+    <h1>Card Collector</h1>
+    <div id="container">
+      <button id="collect">Collect Cards</button>
+      <span id="error">No cards found!</span>
+    </div>
+
+    <script>
+      const collectButton = document.getElementById('collect');
+      const errorMessage = document.getElementById('error');
+
+      const draftedCardImages = [...document.querySelectorAll('img[id^="coll_0_"]')]
+      const draftedCardNames = draftedCardImages.map(img =>
+        img.src.split('/')[5].split('.')[0]
+      );
+      collectButton.addEventListener('click', () => {
+        errorMessage.style.display = 'none';
+        if (draftedCardImages === null || draftedCardImages.length === 0) {
+          errorMessage.style.display = null;
+        }
+
+        const set = draftedCardImages[0].src.split('/')[4];
+        fetch('api.com/deck', {
+          body: {
+            draftedCardNames,
+            set,
+          },
+        })
+          .then();
+      });
+    </script>
+  </body>
+</html>

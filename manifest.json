@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+
+  "name": "card-collector",
+  "description": "This extension allows the user to collect a built card deck",
+  "version": "1.0",
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+  "content_scripts": [
+    { "matches": ["http://draftsim.com/*"], "js": ["content.js"] }
+  ],
+
+  "page_action": {
+    "default_icon": "card.png",
+    "default_title": "Collect some cards"
+  },
+
+  "permissions": [
+    "declarativeContent",
+    "https://cardcollect.com",
+    "activeTab"
+  ]
+}
