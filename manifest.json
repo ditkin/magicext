@@ -11,7 +11,7 @@
   },
 
   "content_scripts": [
-    { "matches": ["http://draftsim.com/*"], "js": ["content.js"] }
+    { "matches": ["http://*/*"], "js": ["content.js"] }
   ],
 
   "page_action": {
@@ -22,6 +22,10 @@
   "permissions": [
     "declarativeContent",
     "https://cardcollect.com",
+    "http://localhost",
     "activeTab"
-  ]
+  ],
+
+  "content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; connect-src http://draftsim.com"
+
 }
