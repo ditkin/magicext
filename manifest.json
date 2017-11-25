@@ -11,12 +11,13 @@
   },
 
   "content_scripts": [
-    { "matches": ["http://*/*"], "js": ["content.js"] }
+    { "matches": ["*://draftsim.com/*"], "js": ["content.js"] }
   ],
 
   "page_action": {
     "default_icon": "card.png",
-    "default_title": "Collect some cards"
+    "default_title": "Collect some cards",
+    "default_popup": "popup.html"
   },
 
   "permissions": [
@@ -24,8 +25,5 @@
     "https://cardcollect.com",
     "http://localhost",
     "activeTab"
-  ],
-
-  "content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; connect-src http://draftsim.com"
-
+  ]
 }

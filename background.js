@@ -1,28 +1,3 @@
-
-function createDeck ({ cards }) {
-  const cardNames = cards.map(card =>
-    card.split('/')[5].split('.')[0]
-  );
-  alert(cardNames[0]);
-  const set = cards[0].split('/')[4];
-
-  chrome.runtime.sendMessage({
-    from: 'background',
-    subject: 'newDeck',
-    cardNames,
-    set,
-  });
-
-  fetch('api.com/deck', {
-    body: {
-      cardNames,
-      set,
-    },
-  })
-    .then();
-
-}
-
 chrome.runtime.onInstalled.addListener(() => {
   // Replace all rules ...
   chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
@@ -42,13 +17,38 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-
-
 chrome.pageAction.onClicked.addListener(tab => {
-  chrome.tabs.sendMessage(tab.id, { text: "get_draft_cards" }, null, createDeck);
+    chrome.tabs.sendMessage(
+      tab.id,
+      {text: 'get_draft_cards'},
+      null,
+      createDeck,
+    );
 });
 
+function createDeck ({ cards }) {
+  alert(arguments.toString);
+  errorMessage.style.display = 'none';
 
+  const cardNames = cards.map(card =>
+    card.split('/')[5].split('.')[0]
+  );
+  alert(cardNames[0]);
+  const set = cards[0].split('/')[4];
 
+  if (cardNames.length) {
+    deckArea.innerHTML = cardNames.toString();
+  }
+  else {
+    errorMessage.style.display = null;
+  }
 
+  //fetch('api.com/deck', {
+    //body: {
+      //cardNames,
+      //set,
+    //},
+  //})
+    //.then();
 
+}
