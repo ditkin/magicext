@@ -1,20 +1,8 @@
 let collectButton, errorMessage, deckArea;
 
-
-chrome.runtime.onMessage.addListener(({ from, subject, cardNames, set }) => {
-  if (from === 'background' && subject === 'newDeck') {
-    if (cardNames.length) {
-      deckArea.innerHTML = cardNames.toString();
-    }
-    else {
-      errorMessage.style.display = null;
-    }
-  }
-});
-
 window.addEventListener('DOMContentLoaded', () => {
   collectButton = document.getElementById('collect');
-  errorMessage = document.getElementById('error');
+  errorMessage = document.getElementById('errorMessage');
   deckArea = document.getElementById('deck');
 
   collectButton.addEventListener('click', () => {
@@ -33,27 +21,20 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function createDeck ({ cards }) {
-  errorMessage.style.display = 'none';
-
-  const cardNames = cards.map(card =>
-    card.split('/')[5].split('.')[0]
-  );
-
-  const set = cards[0].split('/')[4];
-
-  if (cardNames.length) {
-    deckArea.innerHTML = cardNames.toString();
+  if (cards.length === 0) {
+    deckArea.innerHTML = 'No cards found!';
+    deckArea.style.color = 'red';
   }
   else {
-    errorMessage.style.display = null;
+    errorMessage.style.display = 'none';
+    deckArea.style.color = 'black';
+
+    const cardNames = cards.map(card =>
+      card.split('/')[5].split('.')[0]
+    );
+
+    const set = cards[0].split('/')[4];
+
+    deckArea.innerHTML = cardNames.reduce((memo, name) => `${memo}${name}<br>`, '');
   }
-
-  //fetch('api.com/deck', {
-    //body: {
-      //cardNames,
-      //set,
-    //},
-  //})
-    //.then();
-
 }

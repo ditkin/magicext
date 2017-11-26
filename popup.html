@@ -26,12 +26,17 @@
       #collect {
         color: blue;
       }
+
       #collect:focus {
         outline: 0;
       }
-      #error {
+
+      #errorMessage {
         color: red;
         display: none;
+      }
+      #deck {
+        display: block;
       }
     </style>
 
@@ -48,7 +53,7 @@
     <h1>Card Collector</h1>
     <div id="container">
       <button id="collect">Collect Cards</button>
-      <span id="error">No cards found!</span>
+      <span id="errorMessage">No cards found!</span>
       <div id="deck"></div>
     </div>
   </body>
