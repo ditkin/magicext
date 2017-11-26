@@ -38,6 +38,21 @@
       #deck {
         display: block;
       }
+      #nameDeck, #saveDeck{
+        display: block;
+        margin-top: 10px;
+        float: left;
+        display: none;
+      }
+      #nameDeck:focus, #saveDeck:focus {
+        outline: 0;
+      }
+      #login {
+        display: none;
+      }
+      #success {
+        display: none;
+      }
     </style>
 
     <script src="popup.js"></script>
@@ -52,9 +67,17 @@
   <body>
     <h1>Card Collector</h1>
     <div id="container">
-      <button id="collect">Collect Cards</button>
-      <span id="errorMessage">No cards found!</span>
-      <div id="deck"></div>
+      <div id="creator">
+        <span id="errorMessage">No cards found.</span>
+        <div id="deck"></div>
+        <input id="nameDeck" placeholder="Name your deck"/>
+        <button id="saveDeck">Save deck</button>
+      </div>
+      <div id="login">
+        <input id="username" placeholder="username"/>
+        <input id="password" placeholder="password"/>
+      </div>
+      <span id="success">Deck created!</span>
     </div>
   </body>
 </html>

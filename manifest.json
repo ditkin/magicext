@@ -6,7 +6,7 @@
   "version": "1.0",
 
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["background.js", "chrome_ex_oauthsimple.js", "chrome_ex_oauth.js", "onload.js"],
     "persistent": false
   },
 
@@ -23,7 +23,9 @@
   "permissions": [
     "declarativeContent",
     "https://cardcollect.com",
-    "http://localhost",
-    "activeTab"
+    "*://localhost:1234/*",
+    "activeTab",
+    "tabs",
+    "cookies"
   ]
 }
