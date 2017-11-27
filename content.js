@@ -3,6 +3,6 @@ chrome.runtime.onMessage.addListener(({ text }, sender, sendResponse) => {
     const draftedCardImages = document.querySelectorAll('img[id^="coll_0_"]');
     const draftedCardSources = [...draftedCardImages].map(image => image.src);
 
-    sendResponse({ cards: draftedCardSources });
+    sendResponse({ cardURLs: draftedCardSources });
   }
 });

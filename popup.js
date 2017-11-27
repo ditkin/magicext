@@ -1,4 +1,10 @@
-let errorMessage, deckArea, nameDeck, saveDeck, loginArea, success, username, password;
+let creator, errorMessage, deckArea, nameDeck, saveDeck, loginArea, success, username, password;
+
+function resizePopupWindow() {
+  const body = document.body;
+  body.style.height = '400px';
+  body.style.width = '200px';
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   nameDeck = document.getElementById('nameDeck');
@@ -9,6 +15,14 @@ window.addEventListener('DOMContentLoaded', () => {
   success = document.getElementById('success');
   username = document.getElementById('username');
   password = document.getElementById('password');
+  creator = document.getElementById('creator');
+
+  resizePopupWindow();
+
+  nameDeck.addEventListener('keyup', e => {
+    e.target.style.border = '1px solid black';
+    errorMessage.style.display = 'none';
+  });
 
   chrome.tabs.query({
     active: true,
@@ -21,41 +35,37 @@ window.addEventListener('DOMContentLoaded', () => {
       createDeck,
     );
   });
-
 });
 
-function createDeck ({ cards }) {
-  if (cards.length === 0) {
-    deckArea.innerHTML = 'No cards found!';
+function createDeck ({ cardURLs }) {
+  if (cardURLs.length === 0) {
+    errorMessage.style.display = 'block';
     deckArea.style.color = 'red';
   }
   else {
-    nameDeck.style.display = 'block';
-    saveDeck.style.display = 'block';
-    errorMessage.style.display = 'none';
-    deckArea.style.color = 'black';
+    document.body.style.height = `${cardURLs.length * 14}px`;
+    creator.style.display = 'block';
 
-    const cardNames = cards.map(card =>
+    const set = cardURLs[0].split('/')[4];
+    const cardNames = cardURLs.map(card =>
       card.split('/')[5].split('.')[0]
     );
 
-    const set = cards[0].split('/')[4];
-
-    deckArea.innerHTML = cardNames.reduce((memo, name) => `${memo}${name}<br>`, '');
+    renderDeckList(cardNames);
 
     saveDeck.addEventListener('click', () => {
-      fetch('http://localhost:1234/deck', {
+      const name = nameDeck.value;
+      if (!name) {
+        return renderNameError();
+      }
+      return fetch('http://localhost:1234/deck', {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
         headers: new Headers({
           'Content-Type': 'application/json'
         }),
-        body: JSON.stringify({
-          name: nameDeck.value,
-          cards: cardNames,
-          set,
-        }),
+        body: JSON.stringify({ name, cards, set }),
       })
         .then(({ status }) => status === 200
           ? renderSuccess()
@@ -97,6 +107,11 @@ function renderLogin () {
   login.style.display = 'block';
 }
 
+function renderDeckList (names) {
+  const deckListHTML = names.reduce((memo, name) => `${memo}${name}<br>`, ''));
+
+  deckArea.innerHTML = deckListHTML;
+}
 function renderFailedLogin () {
   username.style.color = 'red';
   username.value = null;
@@ -113,4 +128,10 @@ function renderSuccess () {
 function renderCreator () {
   login.style.display = 'none';
   creator.style.display = 'block';
+}
+
+function renderNameError () {
+  nameDeck.style.border = '1px solid red';
+  errorMessage.innerHTML = 'Please enter a name.';
+  errorMessage.style.display = 'block';
 }
