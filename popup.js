@@ -47,11 +47,11 @@ function createDeck ({ cardURLs }) {
     creator.style.display = 'block';
 
     const set = cardURLs[0].split('/')[4];
-    const cardNames = cardURLs.map(card =>
+    const cards = cardURLs.map(card =>
       card.split('/')[5].split('.')[0]
     );
 
-    renderDeckList(cardNames);
+    renderDeckList(cards);
 
     saveDeck.addEventListener('click', () => {
       const name = nameDeck.value;
@@ -108,7 +108,9 @@ function renderLogin () {
 }
 
 function renderDeckList (names) {
-  const deckListHTML = names.reduce((memo, name) => `${memo}${name}<br>`, ''));
+  const deckListHTML = names.reduce((memo, name) =>
+    `${memo}${name}<br>`, ''
+  );
 
   deckArea.innerHTML = deckListHTML;
 }
